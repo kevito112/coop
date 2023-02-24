@@ -8,6 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 public class ProfileController {
@@ -24,10 +26,17 @@ public class ProfileController {
         return profileService.downloadImage(id);
     }
 
+    @GetMapping("profile/filtered")
+    public List<Profile> getFilteredList(@RequestHeader("Authorization") String token){
+        Long userId= Long.valueOf(jwtService.extractUsername(token.substring(7)));
+        return profileService.getFilteredList(userId);
+    }
+
     @PostMapping("/profile")
     public Profile createProfile(@RequestHeader("Authorization") String token, @RequestBody Profile profile) {
         Long userId= Long.valueOf(jwtService.extractUsername(token.substring(7)));
         return profileService.addProfile(userId, profile);
     }
+
 
 }

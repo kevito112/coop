@@ -30,6 +30,12 @@ public class Preferences {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @Column(nullable = false)
+    private int lowerLimitAge;
+
+    @Column(nullable = false)
+    private int upperLimitAge;
+
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId

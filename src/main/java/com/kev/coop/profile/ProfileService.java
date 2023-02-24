@@ -3,6 +3,7 @@ package com.kev.coop.profile;
 import com.kev.coop.exceptions.ResourceConflictException;
 import com.kev.coop.exceptions.ResourceNotFoundException;
 import com.kev.coop.preferences.Preferences;
+import com.kev.coop.preferences.PreferencesRepository;
 import com.kev.coop.preferences.PreferencesService;
 import com.kev.coop.profilepicdata.ImageUtils;
 import com.kev.coop.user.User;
@@ -10,20 +11,43 @@ import com.kev.coop.user.UserRepository;
 import com.kev.coop.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 @Service
-@AllArgsConstructor
 public class ProfileService {
     private final ProfileRepository profileRepository;
     private final UserService userService;
+    private final PreferencesService preferencesService;
 
+    @Autowired
+    public ProfileService(ProfileRepository profileRepository, UserService userService, @Lazy PreferencesService preferencesService){
+        this.profileRepository = profileRepository;
+        this.userService = userService;
+        this.preferencesService = preferencesService;
+    }
     public Profile getProfile(Long profileId){
         if(!profileRepository.existsById(profileId)){
             throw new ResourceNotFoundException("User with id of " + profileId + " does not exist");
         }
         return profileRepository.findProfileById(profileId).get();
+    }
+
+    public List<Profile> getFilteredList(Long userId){
+        Preferences pref = preferencesService.getPreferences(userId);
+        Profile prof = profileRepository.findProfileById(userId).get();
+        Gender genderPref = pref.getGender();
+        int lowerLimitAge = pref.getLowerLimitAge();
+        int upperLimitAge = pref.getUpperLimitAge();
+        Gender genderProf = prof.getGender();
+        LocalDate dob = prof.getDob();
+        return profileRepository.findMatchingProfiles(genderPref, lowerLimitAge, upperLimitAge, genderProf, dob);
     }
 
     public byte[] downloadImage(Long profileId){
@@ -34,6 +58,7 @@ public class ProfileService {
         Optional<Profile> profileOptional = profileRepository.findProfileById(profileId);
         return ImageUtils.decompressImage(profileOptional.get().getProfilePic());
     }
+
 
     public Profile addProfile(Long userId, Profile profile){
         if (profileRepository.existsById(userId)){
@@ -59,4 +84,5 @@ public class ProfileService {
             return profileRepository.save(profile);
         }
     }
+
 }

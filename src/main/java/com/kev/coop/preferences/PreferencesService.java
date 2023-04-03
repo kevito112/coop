@@ -31,10 +31,27 @@ public class PreferencesService {
         return preferencesRepository.findAll();
     }
 
-    public Preferences addPreferences(Long profileId, Preferences preferences){
-        Profile profile = profileService.getProfile(profileId);
+    public Preferences addPreferences(Long preferenceId, Preferences preferences){
+        Profile profile = profileService.getProfile(preferenceId);
         preferences.setProfile(profile);
         return preferencesRepository.save(preferences);
+    }
+
+    public Preferences updatePreferences(Long preferenceId, Preferences preferences){
+        Preferences existingPreference = preferencesRepository.findPreferencesById(preferenceId).get();
+        try{
+            existingPreference.setMileRadius(preferences.getMileRadius());
+        }catch(NullPointerException e){}
+        try{
+            existingPreference.setGender(preferences.getGender());
+        }catch(NullPointerException e){}
+        try{
+            existingPreference.setLowerLimitAge(preferences.getLowerLimitAge());
+        }catch(NullPointerException e){}
+        try{
+            existingPreference.setUpperLimitAge(preferences.getUpperLimitAge());
+        }catch(NullPointerException e){}
+        return preferencesRepository.save(existingPreference);
     }
 
 }

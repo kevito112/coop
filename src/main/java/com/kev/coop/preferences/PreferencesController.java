@@ -16,8 +16,8 @@ public class PreferencesController {
     private final JwtService jwtService;
 
     @GetMapping("preferences/{preferencesId}")
-    public Preferences getPreferences(@PathVariable Long profileId){
-        return preferencesService.getPreferences(profileId);
+    public Preferences getPreferences(@PathVariable Long preferencesId){
+        return preferencesService.getPreferences(preferencesId);
     }
 
     @GetMapping("/preferences")
@@ -26,9 +26,9 @@ public class PreferencesController {
     }
 
     @PutMapping ("/preferences")
-    public Preferences createPreferences(@RequestHeader("Authorization") String token, @RequestBody Preferences preferences) {
+    public Preferences updatePreferences(@RequestHeader("Authorization") String token, @RequestBody Preferences preferences) {
         Long profileId= Long.valueOf(jwtService.extractUsername(token.substring(7)));
-        return preferencesService.addPreferences(profileId, preferences);
+        return preferencesService.updatePreferences(profileId, preferences);
     }
 
 

@@ -22,6 +22,9 @@ public class MatchesService {
         return matchesRepository.findAllMatchesQuery();
     }
     public Matches getMatch(Long matchUserId1, Long matchUserId2){
+        if(!matchesRepository.existsMatchByMatchUser1IdAndMatchUser2Id(matchUserId1, matchUserId2)){
+            throw new ResourceConflictException("Match does not exist");
+        }
         return matchesRepository.findMatchByBothIdsQuery(matchUserId1,matchUserId2).get();
     }
 

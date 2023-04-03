@@ -10,11 +10,12 @@ import java.util.Optional;
 
 @Repository
 public interface MatchesRepository extends JpaRepository<Matches, Long> {
-    @Query("select m from Matches m")
+    @Query("SELECT m FROM Matches m")
     List<Matches> findAllMatchesQuery();
 
-    @Query("select m from Matches m where m.matchUser1.id = ?1 and m.matchUser2.id =?2 or m.matchUser1.id = ?2 and m.matchUser2.id =?1")
+    @Query("SELECT m FROM Matches m WHERE m.matchUser1.id = ?1 AND m.matchUser2.id =?2 OR m.matchUser1.id = ?2 AND m.matchUser2.id =?1")
     Optional<Matches> findMatchByBothIdsQuery(Long matchUser1Id,Long matchUser2Id);
 
+    @Query("SELECT CASE WHEN COUNT(m) > 0 THEN true ELSE false END FROM Matches m WHERE (m.matchUser1.id = ?1 AND m.matchUser2.id = ?2) OR (m.matchUser1.id = ?2 AND m.matchUser2.id = ?1)")
     boolean existsMatchByMatchUser1IdAndMatchUser2Id(Long matchUser1Id,Long matchUser2Id);
 }

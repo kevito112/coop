@@ -18,14 +18,14 @@ public class Swipes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long swipeId;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "swiper_id", nullable = false)
     private User swiperUser;
 
     @Column(nullable = false)
     private boolean wouldDate;
 
-    @ManyToOne
-    @JoinColumn(name = "swipee_id", nullable = true)
+    @ManyToOne()
+    @JoinColumn(name = "swipee_id", nullable = false)
     private User swipeeUser;
 }

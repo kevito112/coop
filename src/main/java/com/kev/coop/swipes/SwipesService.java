@@ -36,9 +36,7 @@ public class SwipesService {
 
     @Transactional
     public Swipes createSwipe(Swipes swipe, Long swiperId,Long swipeeId) {
-        if(!userService.existsById(swiperId)){
-            throw new ResourceNotFoundException("Swiper does not exist with id " + swiperId);
-        }else if(!userService.existsById(swipeeId)){
+        if(!userService.existsById(swipeeId)){
             throw new ResourceNotFoundException("Swipee does not exist with id " + swipeeId);
         }
         if(swipesRepository.existsBySwiperUserIdAndSwipeeUserId(swipeeId, swiperId)){

@@ -6,10 +6,7 @@ import com.kev.coop.profile.Profile;
 import com.kev.coop.user.Role;
 import com.kev.coop.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -37,6 +34,7 @@ public class Preferences {
     private int upperLimitAge;
 
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     private Profile profile;

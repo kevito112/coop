@@ -58,9 +58,7 @@ public class JwtService {
     String userId= extractUsername(token);
     Date tokenDateIssued = extractIssued(token);
     SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
-    System.out.println(format);
     Object redisDateObj = redisTemplate.opsForValue().get(userId); // If token issued < time do not authenticate
-    System.out.println(redisDateObj);
     if(redisDateObj != null){
       Date redisDate = format.parse(redisDateObj.toString());
       if(tokenDateIssued.compareTo(redisDate) < 0){

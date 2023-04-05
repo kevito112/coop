@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kev.coop.preferences.Preferences;
 import com.kev.coop.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -45,6 +42,7 @@ public class Profile {
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
     @MapsId
     private User user;
 

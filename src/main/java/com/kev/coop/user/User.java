@@ -44,11 +44,19 @@ public class User implements UserDetails {     //Model
 
     @JsonIgnore
     @OneToMany(mappedBy = "swiperUser", cascade = CascadeType.ALL)
-    private Set<Swipes> swipes;
+    private List<Swipes> swipes;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "swipeeUser", cascade = CascadeType.ALL)
+    private List<Swipes> swipees;
 
     @JsonIgnore
     @OneToMany(mappedBy = "matchUser1", cascade = CascadeType.ALL)
-    private Set<Matches> matches;
+    private List<Matches> matches;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "matchUser2", cascade = CascadeType.ALL)
+    private List<Matches> matches2;
 
     public User(String email,String password, Role role){
         this.email = email;

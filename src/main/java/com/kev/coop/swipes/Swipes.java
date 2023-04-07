@@ -1,5 +1,6 @@
 package com.kev.coop.swipes;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kev.coop.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ public class Swipes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long swipeId;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "swiper_id", nullable = false)
     private User swiperUser;
@@ -25,6 +27,7 @@ public class Swipes {
     @Column(nullable = false)
     private boolean wouldDate;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "swipee_id", nullable = false)
     private User swipeeUser;
